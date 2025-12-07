@@ -1,12 +1,13 @@
 {
+  "type": "module",
   "name": "volt",
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/main.ts"
   },
   "keywords": [],
   "author": "",
