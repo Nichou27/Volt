@@ -1,6 +1,7 @@
 import { env } from "process";
 import type { PlaywrightPort } from "../../domain/ports/playwright.ts";
 import { chromium } from "playwright";
+import groupTransactions from "../../utils/group-transactions.ts";
 
 export const PlaywrightAutomationAdapter: PlaywrightPort = {
   run: async (transactions) => {
@@ -30,7 +31,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
     // Go to Recursos > Recibos Cobro and fill in the form to create a new "collection" receipt
     await page.goto(receiptsUrl);
 
-    // Here we will create logic to manage the transactions
+    const groupedTransactions = groupTransactions(transactions);
 
     await browser.close();
   },
