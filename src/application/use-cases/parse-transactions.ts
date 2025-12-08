@@ -1,3 +1,4 @@
+import type { Transaction } from "../../domain/entities/transaction.ts";
 import type { PDFParserPort } from "../../domain/ports/pdf-parser.ts";
 
 /**
@@ -11,11 +12,11 @@ import type { PDFParserPort } from "../../domain/ports/pdf-parser.ts";
  *
  * @param {{ PDFParser: PDFParserPort }} dependencies - Dependencies object containing a `PDFParser` implementation (port).
  * @param {string} path - Filesystem path to the PDF file to parse.
- * @returns {Promise<unknown[]>} Promise resolving to the parsed transactions returned by the parser adapter.
+ * @returns {Promise<Transaction[]>} Promise resolving to the parsed transactions returned by the parser adapter.
  */
 export async function parseTransactionsUseCase(
   dependencies: { PDFParser: PDFParserPort },
   path: string
-): Promise<unknown[]> {
+): Promise<Transaction[]> {
   return dependencies.PDFParser.parse({ path });
 }
