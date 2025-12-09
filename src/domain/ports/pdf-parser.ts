@@ -10,5 +10,13 @@ import type { Transaction } from "../entities/transaction.ts";
  * @interface PDFParserPort
  */
 export interface PDFParserPort {
+  /**
+   * Parse a PDF file and extract transactions.
+   *
+   * @param {{ path: string }} options - Parsing options.
+   * @param {string} options.path - Filesystem path to the PDF to parse.
+   * @returns {Promise<Transaction[]>} Promise resolving to an array of parsed `Transaction` objects.
+   * @throws {Error} When the adapter cannot read or parse the PDF file.
+   */
   parse: (options: { path: string }) => Promise<Transaction[]>;
 }

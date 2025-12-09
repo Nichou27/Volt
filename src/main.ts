@@ -7,10 +7,10 @@ import runPlaywrightAutomation from "./application/use-cases/run-playwright-auto
 export default async function main() {
   const transactions = await parseTransactionsUseCase(
     { PDFParser: PDFParserAdapter },
-    "./data/Febrero.pdf"
+    "./data/Marzo.pdf"
   );
 
-  await runPlaywrightAutomation(PlaywrightAutomationAdapter, transactions);
+  //await runPlaywrightAutomation(PlaywrightAutomationAdapter, transactions);
 
   console.table(transactions);
 }

@@ -1,0 +1,42 @@
+[
+  {
+    "date": "10/03/2025",
+    "description": "DATANET ACREEDITACION PROVEED TESORERIA GRA-RENT",
+    "code": "",
+    "amount": "13845850",
+    "type": "CREDIT",
+    "balance": "414516621.87"
+  },
+  {
+    "date": "27/03/2025",
+    "description": "DEPOSITO EN EFECTIVO",
+    "code": "33672569309",
+    "amount": "1865405",
+    "type": "CREDIT",
+    "balance": "369946464.83"
+  },
+  {
+    "date": "27/03/2025",
+    "description": "DEPOSITO EN EFECTIVO",
+    "code": "33672569309",
+    "amount": "5326745",
+    "type": "CREDIT",
+    "balance": "375273209.83"
+  },
+  {
+    "date": "27/03/2025",
+    "description": "DEPOSITO EN EFECTIVO",
+    "code": "33672569309",
+    "amount": "1995230",
+    "type": "CREDIT",
+    "balance": "377268439.83"
+  },
+  {
+    "date": "31/03/2025",
+    "description": "ACRED.CANON EXTR.DE P.LEY2615",
+    "code": "",
+    "amount": "4168478.58",
+    "type": "CREDIT",
+    "balance": "4376323866"
+  }
+]
