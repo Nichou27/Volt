@@ -13,9 +13,13 @@ export interface TransactionExcluderPort {
   /**
    * Exclude or filter transactions according to the adapter's rules.
    *
-   * @param {Transaction[]} transactions - Array of transactions to evaluate.
+   * @param {Transaction[]} transactions - Array of transactions to filter.
+   * @param {string} jsonPath - Path to a JSON file containing transactions to exclude.
    * @returns {Promise<Transaction[]>} A promise that resolves with the filtered transactions.
    * @throws {Error} If the adapter cannot process the input data.
    */
-  exclude: (transactions: Transaction[]) => Promise<Transaction[]>;
+  exclude: (
+    transactions: Transaction[],
+    jsonPath: string
+  ) => Promise<Transaction[]>;
 }
