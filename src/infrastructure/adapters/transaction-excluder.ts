@@ -23,10 +23,12 @@ export const TransactionExcluderAdapter: TransactionExcluderPort = {
     const filteredTransactions: Transaction[] = transactions.filter(
       (transaction) => {
         const key = createTransactionKey(transaction);
-        return !exclusionSet.has(key);
+        return !exclusionSet.has(key) && transaction.type === "CREDIT";
       }
     );
 
     return filteredTransactions;
   },
 };
+
+export default TransactionExcluderAdapter;

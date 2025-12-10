@@ -115,3 +115,5 @@ export const PDFParserAdapter: PDFParserPort = {
     return transactions;
   },
 };
+
+export default PDFParserAdapter;
