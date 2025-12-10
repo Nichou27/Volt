@@ -91,6 +91,9 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         { value: "RPA" }
       );
       await page.getByLabel("Recibo Pago").press("*");
+
+      const optionsLocator = page.locator(".dhx_combo_list > div");
+      const optionsText = await optionsLocator.allInnerTexts();
     }
 
     await browser.close();
