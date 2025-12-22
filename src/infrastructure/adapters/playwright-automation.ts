@@ -60,7 +60,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         .getByRole("cell", { name: "Auxiliar", exact: true })
         .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
       await auxiliaryLocator.press("*");
-      // TODO: JSError in toba website appears here. I should think of a global solution
       const listLocator = page
         .locator(".dhx_combo_list")
         .nth(0)
@@ -84,7 +83,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           "#ef_form_104000130_formulariocod_medio_pago",
           { value: "6" }
         );
-        const bankingAccountLocator = popupPage // En el demo, esta linea no funciona
+        const bankingAccountLocator = popupPage
           .locator("#cont_ef_form_104000130_formularioid_cuenta_banco")
           .getByRole("textbox")
           .nth(0);
@@ -102,6 +101,8 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           })
         );
         await popupPage.click("#ci_104000129_aceptar");
+        await popupPage.waitForEvent("close");
+        await page.waitForLoadState("networkidle");
       }
 
       // Go to "Aplicaciones" tab and add the necessary payment receipts
