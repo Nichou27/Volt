@@ -4,6 +4,7 @@ import { chromium } from "playwright";
 import groupTransactions from "../../utils/group-transactions.ts";
 import parsePaymentReceipt from "../../utils/parse-payment-receipts.ts";
 import parseDate from "../../utils/parse-date.ts";
+import clickWithRetry from "../../utils/click-with-retry.ts";
 
 export const PlaywrightAutomationAdapter: PlaywrightPort = {
   run: async (transactions) => {
@@ -15,7 +16,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
 
     if (!url || !administrationUrl || !receiptsUrl) {
       throw new Error(
-        "The one or many URL's are not defined in the environment variables"
+        "One or many URL's are not defined in the environment variables"
       );
     }
     // Go to login page and fill in login form
@@ -59,13 +60,12 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         .getByRole("cell", { name: "Auxiliar", exact: true })
         .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
       await auxiliaryLocator.press("*");
-
       // TODO: JSError in toba website appears here. I should think of a global solution
-      await page
+      const listLocator = page
         .locator(".dhx_combo_list")
         .nth(0)
-        .getByText("amortizaciones") //Cambiar a "creditos a regularizar"
-        .click();
+        .getByText("amortizaciones"); // Cambiar a "creditos a regularizar"
+      await clickWithRetry(page, auxiliaryLocator, listLocator);
 
       await page.click("#ci_104000109_guardar");
 
