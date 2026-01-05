@@ -42,7 +42,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         })
         .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
       await receiptTypeLocator.press("*");
-      await page.locator(".dhx_combo_list").nth(3).getByText("CECC").click(); // Cambiar a CEPECC
+      await page.locator(".dhx_combo_list").nth(3).getByText("CECARP").click(); // Cambiar a CEPECC
 
       const checkingAccountLocator = page
         .locator("#cont_ef_form_104000112_formularioid_cuenta_corriente")
@@ -51,7 +51,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       await page
         .locator(".dhx_combo_list")
         .nth(2)
-        .getByText("recaudador nacho") // Cambiar a "creditos"
+        .getByText("honorarios") // Cambiar a "creditos"
         .click();
 
       await page.click("#ci_104000109_guardar");
@@ -63,7 +63,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       const listLocator = page
         .locator(".dhx_combo_list")
         .nth(0)
-        .getByText("amortizaciones"); // Cambiar a "creditos a regularizar"
+        .getByText("honorarios"); // Cambiar a "creditos a regularizar"
       await clickWithRetry(page, auxiliaryLocator, listLocator);
 
       await page.click("#ci_104000109_guardar");
@@ -109,25 +109,34 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       await page.click(
         "#ci_104000111_ci_recibo_cobro_edicion_cambiar_tab_pant_aplicaciones"
       );
+      await page.waitForLoadState("networkidle");
       await page.click("#cuadro_104000120_cuadro_agregar");
       await page.selectOption(
         "#ef_form_104000121_formulario_aplicaciontipo_aplicacion",
         { value: "RPA" }
       );
-      await page
+      const paymentReceiptLocator = page
         .getByRole("cell", { name: "Recibo Pago", exact: true })
-        .getByPlaceholder("Texto a filtrar o (*) para ver todo.")
-        .press("*");
+        .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
+      await paymentReceiptLocator.press("*");
 
       // Wait for the dropdown options to load and parse them. Then filter by date.
-      const optionsLocator = page.locator(".dhx_combo_list").nth(0);
-      const optionsText = await optionsLocator.allInnerTexts();
+      const optionsContainer = page.locator(".dhx_combo_list").nth(0);
+      await optionsContainer.waitFor({ state: "visible" });
+      const optionsLocator = optionsContainer.getByText("cuenta auxiliar");
+      await optionsLocator.nth(0).waitFor({ state: "visible" });
+      const options = await optionsLocator.all();
+
+      let optionsText: string[] = [];
+      for (const option of options) {
+        const text = await option.innerText();
+        optionsText.push(text.trim());
+      }
 
       let availablePaymentReceipts = optionsText.map(parsePaymentReceipt);
-
       availablePaymentReceipts = availablePaymentReceipts.filter(
         (paymentReceipt) => {
-          paymentReceipt.date && paymentReceipt.date <= parseDate(date);
+          return paymentReceipt.date && paymentReceipt.date <= parseDate(date);
         }
       );
       availablePaymentReceipts.sort((a, b) => {
@@ -157,9 +166,9 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           amountToUse = remainingAmount;
         }
 
-        await optionsLocator.click();
-        await optionsLocator.fill(paymentReceipt.fullText);
-        await page.keyboard.press("Enter");
+        await paymentReceiptLocator.press("*");
+        await optionsContainer.getByText(paymentReceipt.fullText).click();
+        await page.waitForLoadState("networkidle");
 
         if (amountToUse < paymentReceipt.amount) {
           await page
@@ -173,9 +182,32 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         }
 
         await page.click("#ci_104000109_guardar");
+        await page.waitForLoadState("networkidle");
+
+        // Check if the payment receipt actually has the total amount
+        const usableAmountString = await page
+          .locator(".ei-cuadro-fila")
+          .nth(8)
+          .innerText();
+        const usableAmount = Number(
+          usableAmountString
+            .replace(/\$/g, "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+            .trim()
+        );
+        if (usableAmount < paymentReceipt.amount) {
+          amountToUse = usableAmount;
+        }
 
         currentAmount += amountToUse;
         currentAmount = Math.round(currentAmount * 100) / 100;
+
+        await page.click("#cuadro_104000120_cuadro_agregar");
+        await page.selectOption(
+          "#ef_form_104000121_formulario_aplicaciontipo_aplicacion",
+          { value: "RPA" }
+        );
       }
 
       if (currentAmount < totalAmount) {
@@ -188,10 +220,9 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         await page.click("#ci_104000109_agregar");
         await page.fill("#ef_form_104000112_formulariofecha_comprobante", date);
         const receiptTypeLocator = page
-          .getByLabel("Tipo Recibo (*)")
+          .getByRole("cell", { name: "Tipo Recibo (*)", exact: true })
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await receiptTypeLocator.press("*");
-        await receiptTypeLocator.pressSequentially("CPIMCC");
         await page
           .locator(".dhx_combo_list")
           .nth(3)
@@ -202,7 +233,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .getByRole("cell", { name: "Cuenta Corriente (*)", exact: true })
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await checkingAccountLocator.press("*");
-        await checkingAccountLocator.pressSequentially("contribuyentes");
         await page
           .locator(".dhx_combo_list")
           .nth(2)
@@ -234,7 +264,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           })
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await bankCheckingAccountLocator.press("*");
-        await bankCheckingAccountLocator.pressSequentially("creditos");
         await page
           .locator(".dhx_combo_list")
           .nth(3)
@@ -249,6 +278,8 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           })
         );
         await popupPage.click("#ci_104000129_aceptar");
+        await popupPage.waitForEvent("close");
+        await page.waitForLoadState("networkidle");
 
         // Go to "Imputaciones" tab and fill in the necessary data
         await page.click(
@@ -263,7 +294,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           )
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await resourceLocator.press("*");
-        await resourceLocator.pressSequentially("otros ingresos");
         await page
           .locator(".dhx_combo_list")
           .nth(1)
@@ -276,7 +306,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           )
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await entityLocator.press("*");
-        await entityLocator.pressSequentially("administracion");
         await page
           .locator(".dhx_combo_list")
           .nth(0)
@@ -316,8 +345,17 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .press("*");
 
         // Wait for the dropdown options to load and parse them. Then filter by the amount created before
-        const receipts = optionsLocator.allInnerTexts();
-        let createdReceipt = (await receipts).map(parsePaymentReceipt);
+        await optionsContainer.waitFor({ state: "visible" });
+        await optionsLocator.nth(0).waitFor({ state: "visible" });
+        const receiptsLocator = await optionsLocator.all();
+
+        let allReceipts: string[] = [];
+        for (const receipt of receiptsLocator) {
+          const text = await receipt.innerText();
+          allReceipts.push(text.trim());
+        }
+
+        let createdReceipt = allReceipts.map(parsePaymentReceipt);
         createdReceipt = createdReceipt.filter((receipt) => {
           return (
             receipt.amount === amountLeft && receipt.date === parseDate(date)

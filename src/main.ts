@@ -23,73 +23,30 @@ export default async function main() {
   // Runs Playwright automation with the filtered transactions to prevent duplicates
   await runPlaywrightAutomationUseCase(PlaywrightAutomationAdapter, [
     {
-      date: "18/3/2025",
+      date: "1/9/2025",
       description: "CREDITO DEBIN",
       code: "",
-      amount: 25000.0,
+      amount: 1000.0,
       type: "CREDIT",
       balance: 386208762.98,
     },
     {
-      date: "18/3/2025",
+      date: "1/9/2025",
       description: "CREDITO DEBIN",
       code: "",
-      amount: 146789.83,
+      amount: 2000.0,
       type: "CREDIT",
-      balance: 386355552.81,
+      balance: 386208762.98,
     },
     {
-      date: "18/3/2025",
+      date: "1/9/2025",
       description: "CREDITO DEBIN",
       code: "",
-      amount: 35000.0,
+      amount: 3000.0,
       type: "CREDIT",
-      balance: 386390552.81,
-    },
-    {
-      date: "18/3/2025",
-      description: "CREDITO DEBIN",
-      code: "",
-      amount: 2500.0,
-      type: "CREDIT",
-      balance: 386393052.81,
-    },
-    {
-      date: "18/3/2025",
-      description: "CREDITO DEBIN",
-      code: "",
-      amount: 2400.0,
-      type: "CREDIT",
-      balance: 386395452.81,
-    },
-    {
-      date: "18/3/2025",
-      description: "CREDITO DEBIN",
-      code: "",
-      amount: 3945.93,
-      type: "CREDIT",
-      balance: 386399398.74,
-    },
-    {
-      date: "18/3/2025",
-      description: "CREDITO DEBIN",
-      code: "",
-      amount: 8373.0,
-      type: "CREDIT",
-      balance: 386407771.74,
-    },
-    {
-      date: "18/3/2025",
-      description: "CAUT TRANSF. INTERBANCARIA",
-      code: "",
-      amount: 35000.0,
-      type: "CREDIT",
-      balance: 386442771.74,
+      balance: 386208762.98,
     },
   ]);
-
-  console.table(transactions);
-  console.table(filteredTransactions);
 }
 
 main();

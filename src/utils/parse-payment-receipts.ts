@@ -64,6 +64,10 @@ export default function parsePaymentReceipt(optionText: string): {
   date: Date | null;
   amount: number | null;
 } {
+  if (!optionText) {
+    throw new Error("A string to match was not provided.");
+  }
+
   const dateMatch = optionText.match(/(\d{2}\/\d{2}\/\d{2})/);
   const moneyMatch = optionText.match(/\$([\d,]+\.\d{2})/);
 
