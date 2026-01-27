@@ -5,14 +5,15 @@ import groupTransactions from "../../utils/group-transactions.ts";
 import parsePaymentReceipt from "../../utils/parse-payment-receipts.ts";
 import parseDate from "../../utils/parse-date.ts";
 import clickWithRetry from "../../utils/click-with-retry.ts";
+import reEnterReceipt from "../../utils/re-enter-receipt.ts";
 
 export const PlaywrightAutomationAdapter: PlaywrightPort = {
   run: async (transactions) => {
     const browser = await chromium.launch({ headless: false });
     const page = await browser.newPage();
-    const url = env.URL_DEMO;
-    const administrationUrl = env.URL_DEMO_ADMINISTRACION;
-    const receiptsUrl = env.URL_DEMO_RECIBOS_COBRO;
+    const url = env.URL_MARIANO_MORENO;
+    const administrationUrl = env.URL_MARIANO_MORENO_ADMINISTRACION;
+    const receiptsUrl = env.URL_MARIANO_MORENO_RECIBOS_COBRO;
 
     if (!url || !administrationUrl || !receiptsUrl) {
       throw new Error(
@@ -21,8 +22,8 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
     }
     // Go to login page and fill in login form
     await page.goto(url);
-    await page.fill("#ef_form_1000689_datosusuario", env.TEST_USER || "");
-    await page.fill("#ef_form_1000689_datosclave", env.TEST_PASSWORD || "");
+    await page.fill("#ef_form_1000689_datosusuario", env.USER || "");
+    await page.fill("#ef_form_1000689_datosclave", env.PASSWORD || "");
     await page.click("#form_1000689_datos_ingresar");
 
     // Go to Subsistemas > Administración
@@ -38,11 +39,11 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       const receiptTypeLocator = page
         .getByRole("cell", {
           name: "Tipo Recibo (*)",
-          exact: true,
+          exact: true
         })
         .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
       await receiptTypeLocator.press("*");
-      await page.locator(".dhx_combo_list").nth(3).getByText("CECARP").click(); // Cambiar a CEPECC
+      await page.locator(".dhx_combo_list").nth(3).getByText("CEPECC").click();
 
       const checkingAccountLocator = page
         .locator("#cont_ef_form_104000112_formularioid_cuenta_corriente")
@@ -51,7 +52,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       await page
         .locator(".dhx_combo_list")
         .nth(2)
-        .getByText("honorarios") // Cambiar a "creditos"
+        .getByText("creditos")
         .click();
 
       await page.click("#ci_104000109_guardar");
@@ -63,7 +64,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       const listLocator = page
         .locator(".dhx_combo_list")
         .nth(0)
-        .getByText("honorarios"); // Cambiar a "creditos a regularizar"
+        .getByText("creditos a regularizar");
       await clickWithRetry(page, auxiliaryLocator, listLocator);
 
       await page.click("#ci_104000109_guardar");
@@ -77,7 +78,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       for (const transaction of dayTransactions) {
         const [popupPage] = await Promise.all([
           page.waitForEvent("popup"),
-          page.click("#cuadro_104000127_cuadro_cobros_agregar"),
+          page.click("#cuadro_104000127_cuadro_cobros_agregar")
         ]);
         await popupPage.selectOption(
           "#ef_form_104000130_formulariocod_medio_pago",
@@ -91,13 +92,13 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         await popupPage
           .locator(".dhx_combo_list")
           .nth(20)
-          .getByText("banco intervan") // cambiar a "cuenta central"
+          .getByText("cuenta central")
           .click();
         await popupPage.fill(
           "#ef_form_104000130_formularioimporte",
           transaction.amount.toLocaleString("es-AR", {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 2
           })
         );
         await popupPage.click("#ci_104000129_aceptar");
@@ -123,7 +124,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
       // Wait for the dropdown options to load and parse them. Then filter by date.
       const optionsContainer = page.locator(".dhx_combo_list").nth(0);
       await optionsContainer.waitFor({ state: "visible" });
-      const optionsLocator = optionsContainer.getByText("cuenta auxiliar");
+      const optionsLocator = optionsContainer.getByText("cuenta a cobrar");
       await optionsLocator.nth(0).waitFor({ state: "visible" });
       const options = await optionsLocator.all();
 
@@ -153,6 +154,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         0
       );
       let currentAmount = 0;
+      // TODO #1: My math is off. This loop can't see when a receipt does not have the full amount available, causing it to create a collection receipt with too much money.
       for (const paymentReceipt of availablePaymentReceipts) {
         if (!paymentReceipt.amount || !paymentReceipt.date) continue;
         if (currentAmount >= totalAmount) break;
@@ -169,6 +171,10 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         await paymentReceiptLocator.press("*");
         await optionsContainer.getByText(paymentReceipt.fullText).click();
         await page.waitForLoadState("networkidle");
+        await page
+          .locator("#ef_form_104000121_formulario_aplicacionimporte")
+          .innerText();
+        await page.waitForTimeout(1000);
 
         if (amountToUse < paymentReceipt.amount) {
           await page
@@ -176,7 +182,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
             .fill(
               amountToUse.toLocaleString("es-AR", {
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
+                maximumFractionDigits: 2
               })
             );
         }
@@ -230,7 +236,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .click();
 
         const checkingAccountLocator = page
-          .getByRole("cell", { name: "Cuenta Corriente (*)", exact: true })
+          .locator("#cont_ef_form_104000112_formularioid_cuenta_corriente")
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await checkingAccountLocator.press("*");
         await page
@@ -244,37 +250,42 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         );
 
         await page.click("#ci_104000109_guardar");
+        await page.waitForLoadState("networkidle");
 
         // Go to "Forma de Cobro" tab and add the remaining amount
-        await page.click(
+        const switchTabLocator = page.locator(
           "#ci_104000111_ci_recibo_cobro_edicion_cambiar_tab_pant_cobros"
         );
+        await reEnterReceipt(page, switchTabLocator);
+
         const [popupPage] = await Promise.all([
           page.waitForEvent("popup"),
-          page.click("#cuadro_104000127_cuadro_cobros_agregar"),
+          page.click("#cuadro_104000127_cuadro_cobros_agregar")
         ]);
         await popupPage.selectOption(
           "#ef_form_104000130_formulariocod_medio_pago",
           { value: "25" }
         );
+        await popupPage.waitForLoadState("networkidle");
+        // TODO #2: This locator does not work. Find a way to make it work reliably
         const bankCheckingAccountLocator = popupPage
-          .getByRole("cell", {
-            name: "Cuenta corriente hasta (*)",
-            exact: true,
-          })
+          .locator(".dhx_combo_box")
+          .nth(3)
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await bankCheckingAccountLocator.press("*");
-        await page
+        await popupPage.waitForLoadState("networkidle");
+        await popupPage
           .locator(".dhx_combo_list")
           .nth(3)
           .getByText("creditos")
           .click();
+        await page.waitForLoadState("networkidle");
 
         await popupPage.fill(
           "#ef_form_104000130_formularioimporte",
           amountLeft.toLocaleString("es-AR", {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 2
           })
         );
         await popupPage.click("#ci_104000129_aceptar");
@@ -306,17 +317,18 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           )
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await entityLocator.press("*");
+        // TODO #3: This action does not work reliably. Find a way to make it work
         await page
           .locator(".dhx_combo_list")
           .nth(0)
-          .getByText("administracion")
+          .getByText("administra")
           .click();
-
+        // TODO #4: This does not work either. It throws an error immediately saying that is not a valid selector
         await page.fill(
           "#156_ef_form_104000119_formulario_ml_imputacionesimporte",
           amountLeft.toLocaleString("es-AR", {
             minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            maximumFractionDigits: 2
           })
         );
 
@@ -367,6 +379,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .nth(0)
           .getByText(createdReceipt[0]?.fullText || "")
           .click();
+        await page.waitForLoadState("networkidle");
 
         await page.click("#ci_104000109_guardar");
 
@@ -387,7 +400,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
     }
 
     await browser.close();
-  },
+  }
 };
 
 export default PlaywrightAutomationAdapter;
