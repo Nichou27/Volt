@@ -89,6 +89,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .getByRole("textbox")
           .nth(0);
         await bankingAccountLocator.press("*");
+        await popupPage.waitForLoadState("networkidle");
         await popupPage
           .locator(".dhx_combo_list")
           .nth(20)
@@ -154,7 +155,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         0
       );
       let currentAmount = 0;
-      // TODO #1: My math is off. This loop can't see when a receipt does not have the full amount available, causing it to create a collection receipt with too much money.
       for (const paymentReceipt of availablePaymentReceipts) {
         if (!paymentReceipt.amount || !paymentReceipt.date) continue;
         if (currentAmount >= totalAmount) break;
@@ -171,9 +171,6 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         await paymentReceiptLocator.press("*");
         await optionsContainer.getByText(paymentReceipt.fullText).click();
         await page.waitForLoadState("networkidle");
-        await page
-          .locator("#ef_form_104000121_formulario_aplicacionimporte")
-          .innerText();
         await page.waitForTimeout(1000);
 
         if (amountToUse < paymentReceipt.amount) {
@@ -190,20 +187,28 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         await page.click("#ci_104000109_guardar");
         await page.waitForLoadState("networkidle");
 
-        // Check if the payment receipt actually has the total amount
-        const usableAmountString = await page
-          .locator(".ei-cuadro-fila")
-          .nth(8)
-          .innerText();
-        const usableAmount = Number(
-          usableAmountString
-            .replace(/\$/g, "")
-            .replace(/\./g, "")
-            .replace(",", ".")
-            .trim()
-        );
-        if (usableAmount < paymentReceipt.amount) {
-          amountToUse = usableAmount;
+        // Check ONE TIME ONLY if the payment receipt actually has the total amount.
+        if (currentAmount === 0) {
+          const paymentReceiptBalanceString = await page
+            .locator(".ei-cuadro-fila")
+            .nth(8)
+            .innerText();
+
+          if (paymentReceiptBalanceString === "") {
+            throw new Error("Could not retrieve payment receipt balance");
+          }
+
+          const paymentReceiptBalance = Number(
+            paymentReceiptBalanceString
+              .replace(/\$/g, "")
+              .replace(/\./g, "")
+              .replace(",", ".")
+              .trim()
+          );
+
+          if (paymentReceiptBalance < paymentReceipt.amount) {
+            amountToUse = paymentReceiptBalance;
+          }
         }
 
         currentAmount += amountToUse;
@@ -216,13 +221,15 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         );
       }
 
-      if (currentAmount < totalAmount) {
+      if (currentAmount < Math.round(totalAmount * 100) / 100) {
         // Could not cover the total amount with available receipts. Here we have to create another collection receipt
-        const amountLeft = totalAmount - currentAmount;
+        const amountLeft = Math.round(totalAmount * 100) / 100 - currentAmount;
         await page.click(
           "#ci_104000111_ci_recibo_cobro_edicion_cambiar_tab_pant_encabezado"
         );
+        await page.waitForTimeout(1000);
         await page.click("#ci_104000109_cancelar");
+        await page.waitForTimeout(1000);
         await page.click("#ci_104000109_agregar");
         await page.fill("#ef_form_104000112_formulariofecha_comprobante", date);
         const receiptTypeLocator = page
@@ -267,11 +274,13 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           { value: "25" }
         );
         await popupPage.waitForLoadState("networkidle");
-        // TODO #2: This locator does not work. Find a way to make it work reliably
+        await page.waitForTimeout(1000);
         const bankCheckingAccountLocator = popupPage
-          .locator(".dhx_combo_box")
-          .nth(3)
-          .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
+          .locator(
+            "#cont_ef_form_104000130_formularioid_cuenta_corriente_hasta"
+          )
+          .getByRole("textbox")
+          .nth(0);
         await bankCheckingAccountLocator.press("*");
         await popupPage.waitForLoadState("networkidle");
         await popupPage
@@ -310,6 +319,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           .nth(1)
           .getByText("otros ingresos")
           .click();
+        await page.waitForLoadState("networkidle");
 
         const entityLocator = page
           .locator(
@@ -317,15 +327,13 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           )
           .getByPlaceholder("Texto a filtrar o (*) para ver todo.");
         await entityLocator.press("*");
-        // TODO #3: This action does not work reliably. Find a way to make it work
-        await page
-          .locator(".dhx_combo_list")
-          .nth(0)
-          .getByText("administra")
-          .click();
-        // TODO #4: This does not work either. It throws an error immediately saying that is not a valid selector
-        await page.fill(
-          "#156_ef_form_104000119_formulario_ml_imputacionesimporte",
+        await page.locator(".dhx_combo_list").nth(0).getByText("admin").click();
+        const amountLocator = page
+          .locator(
+            "#nodo_156_ef_form_104000119_formulario_ml_imputacionesimporte"
+          )
+          .getByRole("textbox");
+        await amountLocator.fill(
           amountLeft.toLocaleString("es-AR", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
@@ -351,10 +359,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           "#ef_form_104000121_formulario_aplicaciontipo_aplicacion",
           { value: "RPA" }
         );
-        await page
-          .getByRole("cell", { name: "Recibo Pago" })
-          .getByPlaceholder("Texto a filtrar o (*) para ver todo.")
-          .press("*");
+        await paymentReceiptLocator.press("*");
 
         // Wait for the dropdown options to load and parse them. Then filter by the amount created before
         await optionsContainer.waitFor({ state: "visible" });
@@ -369,18 +374,25 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
 
         let createdReceipt = allReceipts.map(parsePaymentReceipt);
         createdReceipt = createdReceipt.filter((receipt) => {
+          if (!receipt.date) {
+            throw new Error("Date is undefined");
+          }
+
           return (
-            receipt.amount === amountLeft && receipt.date === parseDate(date)
+            receipt.amount === amountLeft && receipt.date <= parseDate(date)
           );
         });
 
+        if (!createdReceipt[0] || createdReceipt[0].fullText === "") {
+          throw new Error("Could not find the created receipt");
+        }
+
         await page
           .locator(".dhx_combo_list")
-          .nth(0)
-          .getByText(createdReceipt[0]?.fullText || "")
+          .getByText(createdReceipt[0].fullText)
           .click();
         await page.waitForLoadState("networkidle");
-
+        await page.waitForTimeout(1000);
         await page.click("#ci_104000109_guardar");
 
         // Now we can confirm the first receipt
@@ -395,6 +407,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         );
         await page.click("#ci_104000111_ci_recibo_cobro_edicion_confirmar");
         await page.click("#ci_104000109_cancelar");
+        currentAmount = 0; // We need to reset currentAmount for the next date
         // Here ends the processing for that day's transactions. We can move to the next date.
       }
     }

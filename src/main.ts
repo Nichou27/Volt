@@ -12,14 +12,14 @@ export default async function main() {
   // Gets PDF and parses transactions
   const transactions = await parseTransactionsUseCase(
     { PDFParser: PDFParserAdapter },
-    "./data/Junio.pdf",
+    "./data/Agosto.pdf"
   );
 
   // Takes parsed transactions and excludes those present in the JSON file
   const filteredTransactions = await excludeTransactionsUseCase(
     TransactionExcluderAdapter,
     transactions,
-    "./data/loaded-transactions.json",
+    "./data/loaded-transactions.json"
   );
 
   writeTransactionsUseCase(TransactionWriterAdapter, filteredTransactions);
@@ -27,7 +27,7 @@ export default async function main() {
   // Runs Playwright automation with the filtered transactions to prevent duplicates
   await runPlaywrightAutomationUseCase(
     PlaywrightAutomationAdapter,
-    filteredTransactions,
+    filteredTransactions
   );
 }
 
