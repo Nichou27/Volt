@@ -12,7 +12,7 @@ export default async function main() {
   // Gets PDF and parses transactions
   const transactions = await parseTransactionsUseCase(
     { PDFParser: PDFParserAdapter },
-    "./data/Agosto.pdf"
+    "./data/Octubre.pdf"
   );
 
   // Takes parsed transactions and excludes those present in the JSON file

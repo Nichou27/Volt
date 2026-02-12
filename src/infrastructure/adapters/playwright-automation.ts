@@ -159,11 +159,12 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         if (!paymentReceipt.amount || !paymentReceipt.date) continue;
         if (currentAmount >= totalAmount) break;
 
-        const remainingAmount = totalAmount - currentAmount;
+        const remainingAmount =
+          Math.round((totalAmount - currentAmount) * 100) / 100;
         let amountToUse = 0;
 
         if (paymentReceipt.amount <= remainingAmount) {
-          amountToUse = paymentReceipt.amount;
+          amountToUse = Math.round(paymentReceipt.amount * 100) / 100;
         } else {
           amountToUse = remainingAmount;
         }
@@ -207,7 +208,7 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
           );
 
           if (paymentReceiptBalance < paymentReceipt.amount) {
-            amountToUse = paymentReceiptBalance;
+            amountToUse = Math.round(paymentReceiptBalance * 100) / 100;
           }
         }
 
@@ -373,14 +374,18 @@ export const PlaywrightAutomationAdapter: PlaywrightPort = {
         }
 
         let createdReceipt = allReceipts.map(parsePaymentReceipt);
+
         createdReceipt = createdReceipt.filter((receipt) => {
           if (!receipt.date) {
-            throw new Error("Date is undefined");
+            return false;
           }
 
-          return (
-            receipt.amount === amountLeft && receipt.date <= parseDate(date)
-          );
+          const targetDate = parseDate(date);
+          const amountsMatch =
+            Math.abs((receipt.amount || 0) - amountLeft) < 0.01;
+          const datesMatch = receipt.date.getTime() <= targetDate.getTime();
+
+          return amountsMatch && datesMatch;
         });
 
         if (!createdReceipt[0] || createdReceipt[0].fullText === "") {

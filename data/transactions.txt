@@ -1,378 +1,178 @@
 [
   {
-    "date": "20/8/2025",
+    "date": "28/10/2025",
     "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "4552723818",
-    "amount": 8351.6,
-    "type": "CREDIT",
-    "balance": 281476604.83
-  },
-  {
-    "date": "20/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "600172",
+    "code": "4187972993",
     "amount": 10000,
     "type": "CREDIT",
-    "balance": 281486604.83
+    "balance": 419687922.22
   },
   {
-    "date": "20/8/2025",
+    "date": "28/10/2025",
     "description": "CREDITO DEBIN",
-    "code": "871955",
-    "amount": 3931.12,
-    "type": "CREDIT",
-    "balance": 281490535.95
-  },
-  {
-    "date": "20/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "976188",
-    "amount": 11881.93,
-    "type": "CREDIT",
-    "balance": 281502417.88
-  },
-  {
-    "date": "20/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "608572",
-    "amount": 26803.2,
-    "type": "CREDIT",
-    "balance": 281529221.08
-  },
-  {
-    "date": "20/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 7959.01,
-    "type": "CREDIT",
-    "balance": 281537180.09
-  },
-  {
-    "date": "20/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 220987.56,
-    "type": "CREDIT",
-    "balance": 281758167.65
-  },
-  {
-    "date": "21/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 113545.62,
-    "type": "CREDIT",
-    "balance": 279204149.26
-  },
-  {
-    "date": "21/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 9879,
-    "type": "CREDIT",
-    "balance": 279214028.26
-  },
-  {
-    "date": "21/8/2025",
-    "description": "CREDITO POR TRANSFERENCIA",
-    "code": "816432",
-    "amount": 8251.05,
-    "type": "CREDIT",
-    "balance": 279222279.31
-  },
-  {
-    "date": "21/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "252203",
-    "amount": 7000,
-    "type": "CREDIT",
-    "balance": 279229279.31
-  },
-  {
-    "date": "21/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "5458235332",
-    "amount": 209030.71,
-    "type": "CREDIT",
-    "balance": 279438310.02
-  },
-  {
-    "date": "21/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "5488969111",
-    "amount": 78102,
-    "type": "CREDIT",
-    "balance": 279516412.02
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "6324840326",
-    "amount": 39524,
-    "type": "CREDIT",
-    "balance": 278848531.54
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "921932",
-    "amount": 34363.87,
-    "type": "CREDIT",
-    "balance": 278882895.41
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "777203",
-    "amount": 3000,
-    "type": "CREDIT",
-    "balance": 278885895.41
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "596686",
-    "amount": 7000,
-    "type": "CREDIT",
-    "balance": 278892895.41
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "47279",
-    "amount": 20000,
-    "type": "CREDIT",
-    "balance": 278912895.41
-  },
-  {
-    "date": "22/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "158857",
-    "amount": 25930.18,
-    "type": "CREDIT",
-    "balance": 278938825.59
-  },
-  {
-    "date": "22/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 133927.7,
-    "type": "CREDIT",
-    "balance": 279072753.29
-  },
-  {
-    "date": "22/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 16533.61,
-    "type": "CREDIT",
-    "balance": 279089286.9
-  },
-  {
-    "date": "25/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "409012",
-    "amount": 117062.89,
-    "type": "CREDIT",
-    "balance": 274769403.52
-  },
-  {
-    "date": "25/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "412478",
-    "amount": 482.39,
-    "type": "CREDIT",
-    "balance": 274769885.91
-  },
-  {
-    "date": "25/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "137752",
-    "amount": 31995,
-    "type": "CREDIT",
-    "balance": 274801880.91
-  },
-  {
-    "date": "25/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "971398",
-    "amount": 78318.96,
-    "type": "CREDIT",
-    "balance": 274880199.87
-  },
-  {
-    "date": "25/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 151286.96,
-    "type": "CREDIT",
-    "balance": 275031486.83
-  },
-  {
-    "date": "26/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 125580.69,
-    "type": "CREDIT",
-    "balance": 272018487.76
-  },
-  {
-    "date": "26/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "515080",
-    "amount": 13567.57,
-    "type": "CREDIT",
-    "balance": 272032055.33
-  },
-  {
-    "date": "26/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "587129",
-    "amount": 2500,
-    "type": "CREDIT",
-    "balance": 272034555.33
-  },
-  {
-    "date": "26/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "355861",
-    "amount": 15000,
-    "type": "CREDIT",
-    "balance": 272049555.33
-  },
-  {
-    "date": "27/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 81598.02,
-    "type": "CREDIT",
-    "balance": 255847953.35
-  },
-  {
-    "date": "27/8/2025",
-    "description": "TC.COMER.MASTERCARD/MAESTRO",
-    "code": "",
-    "amount": 187796.29,
-    "type": "CREDIT",
-    "balance": 256035749.64
-  },
-  {
-    "date": "27/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "824950",
+    "code": "189880",
     "amount": 10000,
     "type": "CREDIT",
-    "balance": 256045749.64
+    "balance": 419697922.22
   },
   {
-    "date": "27/8/2025",
+    "date": "28/10/2025",
     "description": "CREDITO DEBIN",
-    "code": "799061",
-    "amount": 18043.81,
-    "type": "CREDIT",
-    "balance": 256063793.45
-  },
-  {
-    "date": "27/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "735509",
-    "amount": 7000,
-    "type": "CREDIT",
-    "balance": 256070793.45
-  },
-  {
-    "date": "27/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "636064350",
-    "amount": 2500,
-    "type": "CREDIT",
-    "balance": 256073293.45
-  },
-  {
-    "date": "27/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "682125055",
-    "amount": 158823.74,
-    "type": "CREDIT",
-    "balance": 256232117.19
-  },
-  {
-    "date": "28/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "369376",
-    "amount": 4000,
-    "type": "CREDIT",
-    "balance": 251883825.19
-  },
-  {
-    "date": "28/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "707478",
+    "code": "570194",
     "amount": 8000,
     "type": "CREDIT",
-    "balance": 251891825.19
+    "balance": 419705922.22
   },
   {
-    "date": "28/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "237830",
-    "amount": 49200,
-    "type": "CREDIT",
-    "balance": 251941025.19
-  },
-  {
-    "date": "28/8/2025",
+    "date": "29/10/2025",
     "description": "TC.COMER.MASTERCARD/MAESTRO",
     "code": "",
-    "amount": 49265.86,
+    "amount": 118820.66,
     "type": "CREDIT",
-    "balance": 251990291.05
+    "balance": 413411920.86
   },
   {
-    "date": "29/8/2025",
+    "date": "29/10/2025",
+    "description": "CAUT TRANSF. INTERBANCARIA",
+    "code": "5023168743",
+    "amount": 5200,
+    "type": "CREDIT",
+    "balance": 413417120.86
+  },
+  {
+    "date": "29/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "360767",
+    "amount": 14000,
+    "type": "CREDIT",
+    "balance": 413431120.86
+  },
+  {
+    "date": "29/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "365457",
+    "amount": 53444.2,
+    "type": "CREDIT",
+    "balance": 413484565.06
+  },
+  {
+    "date": "29/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "679616",
+    "amount": 14422,
+    "type": "CREDIT",
+    "balance": 413498987.06
+  },
+  {
+    "date": "30/10/2025",
+    "description": "CAUT TRANSF. INTERBANCARIA",
+    "code": "5997927331",
+    "amount": 72178.92,
+    "type": "CREDIT",
+    "balance": 368807940.85
+  },
+  {
+    "date": "30/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "356643",
+    "amount": 29474,
+    "type": "CREDIT",
+    "balance": 368837414.85
+  },
+  {
+    "date": "30/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "731041",
+    "amount": 39372.24,
+    "type": "CREDIT",
+    "balance": 368876787.09
+  },
+  {
+    "date": "30/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "994094",
+    "amount": 40490.5,
+    "type": "CREDIT",
+    "balance": 368917277.59
+  },
+  {
+    "date": "30/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "774055",
+    "amount": 78012.81,
+    "type": "CREDIT",
+    "balance": 368995290.4
+  },
+  {
+    "date": "30/10/2025",
     "description": "TC.COMER.MASTERCARD/MAESTRO",
     "code": "",
-    "amount": 204568.36,
+    "amount": 28034.75,
     "type": "CREDIT",
-    "balance": 252169859.41
+    "balance": 369023325.15
   },
   {
-    "date": "29/8/2025",
-    "description": "CREDITO DEBIN",
-    "code": "671080",
-    "amount": 29554,
-    "type": "CREDIT",
-    "balance": 258863765.82
-  },
-  {
-    "date": "29/8/2025",
+    "date": "31/10/2025",
     "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "2320115211",
-    "amount": 1365179.72,
+    "code": "6811931362",
+    "amount": 42678.82,
     "type": "CREDIT",
-    "balance": 260228945.54
+    "balance": 368177269.97
   },
   {
-    "date": "29/8/2025",
-    "description": "CAUT TRANSF. INTERBANCARIA",
-    "code": "2323568394",
-    "amount": 7200,
-    "type": "CREDIT",
-    "balance": 260236145.54
-  },
-  {
-    "date": "29/8/2025",
+    "date": "31/10/2025",
     "description": "CREDITO DEBIN",
-    "code": "72876",
+    "code": "214460",
+    "amount": 22404.81,
+    "type": "CREDIT",
+    "balance": 368199674.78
+  },
+  {
+    "date": "31/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "863968",
     "amount": 8750,
     "type": "CREDIT",
-    "balance": 260244895.54
+    "balance": 368208424.78
   },
   {
-    "date": "29/8/2025",
+    "date": "31/10/2025",
     "description": "CREDITO DEBIN",
-    "code": "32414",
+    "code": "389463",
     "amount": 44712,
     "type": "CREDIT",
-    "balance": 260289607.54
+    "balance": 368253136.78
+  },
+  {
+    "date": "31/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "339969",
+    "amount": 7000,
+    "type": "CREDIT",
+    "balance": 368260136.78
+  },
+  {
+    "date": "31/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "172623",
+    "amount": 27692.76,
+    "type": "CREDIT",
+    "balance": 368287829.54
+  },
+  {
+    "date": "31/10/2025",
+    "description": "CREDITO DEBIN",
+    "code": "613698",
+    "amount": 10000,
+    "type": "CREDIT",
+    "balance": 368297829.54
+  },
+  {
+    "date": "31/10/2025",
+    "description": "TC.COMER.MASTERCARD/MAESTRO",
+    "code": "",
+    "amount": 19758,
+    "type": "CREDIT",
+    "balance": 374867058.6
   }
 ]
